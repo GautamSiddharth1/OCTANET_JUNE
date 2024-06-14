@@ -1,20 +1,34 @@
-'use strict';
-const overlay = document.querySelector("[data-overlay]");
-const navOpenBtn = document.querySelector("[data-nav-open-btn]");
-const navbar = document.querySelector("[data-navbar]");
-const navCloseBtn = document.querySelector("[data-nav-close-btn]");
-
-const navElemArr = [overlay, navOpenBtn, navCloseBtn];
-
-for (let i = 0; i < navElemArr.length; i++) {
-  navElemArr[i].addEventListener("click", function () {
-    navbar.classList.toggle("active");
-    overlay.classList.toggle("active");
-  });
+const inputBox = document.getElementById("input-box");
+const listContainer = document.getElementById("list-container")
+function addTask(){
+if(inputBox.value === ''){
+alert("You must write something!");
 }
-const header = document.querySelector("[data-header]");
-
-window.addEventListener("scroll", function () {
-  window.scrollY >= 200 ? header.classList.add("active")
-    : header.classList.remove("active");
-})
+else{
+let li = document.createElement("li");
+li.innerHTML = inputBox.value;
+listContainer.appendChild(li);
+let span = document.createElement("span");
+span.innerHTML = "\u00d7";
+li.appendChild(span);
+}
+inputBox.value ="";
+saveData();
+}
+listContainer.addEventListener("click", function(e){
+if (e.target.tagName === "LI"){
+e.target.classList.toggle("checked");
+saveData();
+}
+else if(e.target.tagName === "SPAN"){
+e.target.parentElement.remove();
+savaData();
+}
+}, false);
+function saveData(){
+localStorage.setItem("data",listContainer.innerHTML);
+}
+function showTask(){
+listContainer.innerHTML = localStorage.getItem("data");
+}
+showTask();
